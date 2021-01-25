@@ -1,15 +1,20 @@
-import <module_name> as module
+from importlib import import_module
+from os import system
 
-"""
-Print type of any unstrongly-private-object in a module
-Change <module_name> to any module you want to know
-"""
-print(module.__dir__(), "\n")
+print("Which module do you want to know?")
+mod = input()
 
-max_len = max(len(i) for i in module.__dir__())
+try:
+	module = import_module(mod)
 
-for i in module.__dir__():
-	try:
-		print(i + " "*(max_len - len(i)) + ": " + str(type(getattr(module, i))))
-	except Exception as e:
-		print(i + " "*(max_len - len(i))+": '{}' is not imported".format(i))
+	max_len = max(len(i) for i in module.__dir__())
+
+	for i in module.__dir__():
+		try:
+			print(i + " "*(max_len - len(i)) + ": " + str(type(getattr(module, i))))
+		except Exception:
+			print(i + " "*(max_len - len(i))+": '{}' is not imported".format(i))
+except ModuleNotFoundError:
+	print("No module named '{}'".format(mod))
+
+system("pause")
